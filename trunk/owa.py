@@ -1,13 +1,15 @@
 import re
 import mechanize
 import sys
+from Growl import *
 
 class OwaChecker:
 
-    def __init__(self, url, username, password):
+    def __init__(self, url, username, password, useGrowl=True):
         self.url = url
         self.username = username
         self.password = password
+        self.useGrowl = useGrowl
 
     def check(self):
         
@@ -34,10 +36,15 @@ class OwaChecker:
                 html = html[len('<span class="unrd">('):]
                 html = html[:html.find(')')]
                 unread = int(html)
+
+            if self.useGrowl and unread > 0:
+                message = 'You have ' + str(unread) + ' unread emails in your inbox'
+                growl = GrowlNotifier('OWA Checker', [GROWL_NOTIFICATION_STICKY])
+                growl.register()
+                growl.notify(GROWL_NOTIFICATION_STICKY, "Unread Email", message)
                 
             return unread
         
-
 if __name__ == '__main__':
 
     args = sys.argv
