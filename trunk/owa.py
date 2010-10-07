@@ -38,7 +38,10 @@ class OwaChecker:
                 unread = int(html)
 
             if self.useGrowl and unread > 0:
-                message = 'You have ' + str(unread) + ' unread emails in your inbox'
+                message = 'You have ' + str(unread) + ' unread email'
+                if unread > 1:
+                    message += 's'
+                message += ' in your inbox'
                 growl = GrowlNotifier('OWA Checker', [GROWL_NOTIFICATION_STICKY])
                 growl.register()
                 growl.notify(GROWL_NOTIFICATION_STICKY, "Unread Email", message)
