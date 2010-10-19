@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
     args = sys.argv
     if len(args) != 4:
-        print 'usage: URL USERNAME PASSWORD'
+        print 'usage: OWA-ADDRESS EMAIL PASSWORD'
         print '\tExample: https://mymail.company.com/owa edwin@company.com great123'
     else:
         print 'Communicating with OWA, please wait...'
