@@ -14,7 +14,13 @@ class OwaChecker:
     def check(self):
         
         br = mechanize.Browser()
-        br.open(self.url)
+        try:
+
+            br.open(self.url)
+        except Exception:
+            # No connectivity
+            return -2
+            
         br.select_form(name="logonForm")
         br["username"] = self.username
         br["password"] = self.password
@@ -66,5 +72,7 @@ if __name__ == '__main__':
 
         if unread == -1:
             print 'Wrong username or password'
+        elif unread == -2:
+            print 'Could not connect to ' + url
         else:
             print 'You have ' + str(unread) + ' unread emails in your inbox'
