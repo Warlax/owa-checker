@@ -25,7 +25,12 @@ class OwaChecker:
         br["username"] = self.username
         br["password"] = self.password
 
-        response = br.submit()
+        try:
+            response = br.submit()
+        except urllib2.URLError:
+            # URL error (sometimes this is due to connectivity problems)
+            return -3
+            
         html = response.read()
 
         if html.find('is not valid') != -1:
@@ -74,5 +79,7 @@ if __name__ == '__main__':
             print 'Wrong username or password'
         elif unread == -2:
             print 'Could not connect to ' + url
+        elif unread == -3:
+            print 'URL error'
         else:
             print 'You have ' + str(unread) + ' unread emails in your inbox'
