@@ -2,6 +2,7 @@ import re
 import mechanize
 import sys
 from Growl import *
+import urllib2
 
 class OwaChecker:
 
