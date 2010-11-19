@@ -30,6 +30,7 @@
 EXPECTED_ARGS=3
 
 USER_DIR=/Users/Ale
+GROWL_NOTIFY_PATH=/usr/local/bin
 . $USER_DIR/.bash_profile
 
 if [ $# -ne $EXPECTED_ARGS ]
@@ -49,7 +50,7 @@ count=0
 if [[ $CURL == *"not valid"* ]]
 then
 	count=-1
-	/usr/local/bin/growlnotify --name "OWA Checker" --title "OWA Checker" --message "Invalid username and/or password!" --appIcon Mail.app
+	${GROWL_NOTIFY_PATH}/growlnotify --name "OWA Checker" --title "OWA Checker" --message "Invalid username and/or password!" --appIcon Mail.app
 else
 	if [[ $CURL == *">Inbox </a><span class=\"unrd\">"* ]]
 	then
@@ -63,7 +64,7 @@ else
 			then
 				emails="emails."
 			fi
-			/usr/local/bin/growlnotify --name "OWA Checker" --title "OWA Checker" --sticky --message "You have ${count} unread ${emails}" --appIcon Mail.app
+			${GROWL_NOTIFY_PATH}/growlnotify --name "OWA Checker" --title "OWA Checker" --message "You have ${count} unread ${emails}" --appIcon Mail.app
 		fi
     fi
 fi
