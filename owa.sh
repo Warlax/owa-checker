@@ -1,3 +1,4 @@
+#!/bin/sh
 #################################################################################
 # Copyright (c) 2010, Alejandro Nijamkin
 # All rights reserved.
@@ -25,8 +26,6 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 #################################################################################
-
-#!/bin/sh
 EXPECTED_ARGS=3
 
 USER_DIR=/Users/Ale
@@ -43,7 +42,9 @@ URL=$1
 USERNAME=$2
 PASSWORD=$3
 
-CURL=$(curl --cookie-jar cookies.txt --location --data "destination=$1&flags=4&forcedownlevel=0&trusted=4&username=$2&password=$3&isUtf8=1" $1/owa/auth/owaauth.dll)
+#echo "Running curl..."
+CURL=$(curl --silent --cookie-jar cookies.txt --location --data "destination=$1&flags=4&forcedownlevel=0&trusted=4&username=$2&password=$3&isUtf8=1" $1/owa/auth/owaauth.dll)
+#echo "...done"
 
 count=0
 
@@ -52,6 +53,7 @@ then
 	count=-1
 	${GROWL_NOTIFY_PATH}/growlnotify --name "OWA Checker" --title "OWA Checker" --message "Invalid username and/or password!" --appIcon Mail.app
 else
+	#echo "Parsing HTTP response..."
 	if [[ $CURL == *">Inbox </a><span class=\"unrd\">"* ]]
 	then
 		CURL=$(echo $CURL | sed 's/.*class="unrd">//' | sed 's/<.*//' | tr -d "\n" | tr "()" "^")
@@ -67,6 +69,5 @@ else
 			${GROWL_NOTIFY_PATH}/growlnotify --name "OWA Checker" --title "OWA Checker" --message "You have ${count} unread ${emails}" --appIcon Mail.app
 		fi
     fi
+	#echo "...done"
 fi
-
-echo $count
