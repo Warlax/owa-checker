@@ -29,6 +29,9 @@
 #!/bin/sh
 EXPECTED_ARGS=3
 
+USER_DIR=/Users/Ale
+. $USER_DIR/.bash_profile
+
 if [ $# -ne $EXPECTED_ARGS ]
 then
   echo "Usage: URL USERNAME PASSWORD"
@@ -38,9 +41,6 @@ fi
 URL=$1
 USERNAME=$2
 PASSWORD=$3
-GROWL=$4
-
-echo $GROWL
 
 CURL=$(curl --cookie-jar cookies.txt --location --data "destination=$1&flags=4&forcedownlevel=0&trusted=4&username=$2&password=$3&isUtf8=1" $1/owa/auth/owaauth.dll)
 
@@ -49,7 +49,7 @@ count=0
 if [[ $CURL == *"not valid"* ]]
 then
 	count=-1
-	growlnotify --name "OWA Checker" --title "OWA Checker" --message "Invalid username and/or password!" --appIcon Mail.app
+	/usr/local/bin/growlnotify --name "OWA Checker" --title "OWA Checker" --message "Invalid username and/or password!" --appIcon Mail.app
 else
 	if [[ $CURL == *">Inbox </a><span class=\"unrd\">"* ]]
 	then
@@ -63,7 +63,7 @@ else
 			then
 				emails="emails."
 			fi
-			growlnotify --name "OWA Checker" --title "OWA Checker" --message "You have ${count} unread ${emails}" --appIcon Mail.app
+			/usr/local/bin/growlnotify --name "OWA Checker" --title "OWA Checker" --sticky --message "You have ${count} unread ${emails}" --appIcon Mail.app
 		fi
     fi
 fi
